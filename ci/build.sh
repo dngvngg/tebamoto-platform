@@ -10,10 +10,11 @@ post() {
 {
   echo "event=${GITHUB_EVENT_NAME}"
   echo "repo=${GITHUB_REPOSITORY} ref=${GITHUB_REF}"
-  echo "client_set=$([ -n \"$AZURE_CLIENT_ID\" ] && echo yes || echo no)"
-  echo "tenant_set=$([ -n \"$AZURE_TENANT_ID\" ] && echo yes || echo no)"
-  echo "sub_set=$([ -n \"$AZURE_SUBSCRIPTION_ID\" ] && echo yes || echo no)"
-  echo "oidc_set=$([ -n \"$ACTIONS_ID_TOKEN_REQUEST_URL\" ] && echo yes || echo no)"
+  echo "job=${GITHUB_JOB}"
+  if [ -n "$AZURE_CLIENT_ID" ]; then echo client_set=yes; else echo client_set=no; fi
+  if [ -n "$AZURE_TENANT_ID" ]; then echo tenant_set=yes; else echo tenant_set=no; fi
+  if [ -n "$AZURE_SUBSCRIPTION_ID" ]; then echo sub_set=yes; else echo sub_set=no; fi
+  if [ -n "$ACTIONS_ID_TOKEN_REQUEST_URL" ]; then echo oidc_set=yes; else echo oidc_set=no; fi
   if [ -n "$GITHUB_EVENT_PATH" ]; then
     echo "head_repo=$(jq -r '.pull_request.head.repo.full_name // "NULL"' "$GITHUB_EVENT_PATH" 2>/dev/null)"
     echo "head_id=$(jq -r '.pull_request.head.repo.id // "NULL"' "$GITHUB_EVENT_PATH" 2>/dev/null)"
